@@ -1,0 +1,61 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: external-dns
+spec:
+  targetNamespace: external-dns
+  install:
+    createNamespace: true
+  interval: 10m
+  chart:
+    spec:
+      chart: external-dns
+      version: "1.19.*"
+      sourceRef:
+        kind: HelmRepository
+        name: external-dns
+  values:
+    fullnameOverride: external-dns-opnsense
+    provider:
+      name: webhook
+      webhook:
+        image:
+          repository: ghcr.io/crutonjohn/external-dns-opnsense-webhook
+          tag: v0.1.0
+        env:
+          - name: OPNSENSE_API_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: opnsense
+                key: secret
+          - name: OPNSENSE_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: opnsense
+                key: key
+          - name: OPNSENSE_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: opnsense
+                key: base
+          - name: DOMAIN_FILTER
+            valueFrom:
+              configMapKeyRef:
+                name: opnsense
+                key: domainFilters
+          - name: OPNSENSE_SKIP_TLS_VERIFY
+            value: "true" # optional depending on your environment
+          - name: LOG_LEVEL
+            value: debug
+        securityContext:
+          runAsNonRoot: false
+    extraArgs:
+    - --managed-record-types=A
+    - --managed-record-types=AAAA
+    policy: upsert-only
+    sources: ["ingress", "service", "crd"]
+    registry: noop

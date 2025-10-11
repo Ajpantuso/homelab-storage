@@ -1,0 +1,8 @@
+repo: Ajpantuso/homelab-pki
+k0s:
+  version: v1.33.4+k0s.0
+  config_path: /k0s/storage.clusterconfig.yaml.j2
+oidc:
+  config_url: http://srv-001.ajphome.com/pki/k0s-storage-oidc.yaml
+flux:
+  kustomize_dir: /flux
