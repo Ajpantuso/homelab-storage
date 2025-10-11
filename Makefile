@@ -15,7 +15,11 @@ help:
 
 # Flux targets
 flux-apply:
-	kubectl apply -k flux
+	kubectl apply -k flux --prune --all \
+	--prune-allowlist=source.toolkit.fluxcd.io/v1/gitrepository \
+	--prune-allowlist=source.toolkit.fluxcd.io/v1beta2/helmrepository \
+	--prune-allowlist=helm.toolkit.fluxcd.io/v2beta2/helmrelease \
+	--prune-allowlist=kustomize.toolkit.fluxcd.io/v1/kustomization
 .PHONY: flux-apply
 
 update-k0s-version:
