@@ -14,3 +14,4 @@ resources:
 - traefik.helmrelease.yaml
 - external-dns.helmrepository.yaml
 - external-dns.helmrelease.yaml
+- rbac.kustomization.yaml
