@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: directpv
+spec:
+  interval: 5m
+  url: https://github.com/minio/directpv
+  ref:
+    tag: v4.1.5

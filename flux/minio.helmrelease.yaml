@@ -1,0 +1,32 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: minio
+spec:
+  targetNamespace: minio
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: minio
+      version: 5.*
+      sourceRef:
+        kind: HelmRepository
+        name: minio
+  interval: 10m0s
+  values:
+    mode: standalone
+    existingSecret: minio-creds
+    persistence:
+      enabled: false
+    resources:
+      requests:
+        memory: 4Gi
+    service:
+      type: LoadBalancer
+    consoleService:
+      type: LoadBalancer

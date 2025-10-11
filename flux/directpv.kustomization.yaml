@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: directpv
+spec:
+  interval: 10m0s
+  sourceRef:
+    kind: GitRepository
+    name: directpv
+  path: "./resources/base"
+  prune: true
+  wait: true
+  timeout: 5m0s
