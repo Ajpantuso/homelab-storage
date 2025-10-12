@@ -12,5 +12,5 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: homelab-pki
+    name: homelab-storage
   targetNamespace: metallb-system

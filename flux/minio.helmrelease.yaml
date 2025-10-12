@@ -28,6 +28,34 @@ spec:
       requests:
         memory: 4Gi
     service:
-      type: LoadBalancer
+      type: ClusterIP
     consoleService:
-      type: LoadBalancer
+      type: ClusterIP
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.tls: "true"
+        cert-manager.io/cluster-issuer: ca
+        cert-manager.io/common-name: api.minio.ajphome.com
+      hosts:
+      - api.minio.ajphome.com
+      tls:
+      - secretName: minio-tls
+        hosts:
+        - api.minio.ajphome.com
+    consoleIngress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.tls: "true"
+        cert-manager.io/cluster-issuer: ca
+        cert-manager.io/common-name: minio.ajphome.com
+      hosts:
+      - minio.ajphome.com
+      tls:
+      - secretName: minio-console-tls
+        hosts:
+        - minio.ajphome.com
