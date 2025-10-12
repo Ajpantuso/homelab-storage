@@ -27,6 +27,12 @@ update-k0s-version:
 	yq -r ".k0s.version = \"$$VERSION\"" --indentless -iy config.yaml
 .PHONY: update-k0s-version
 
+initialize-drives:
+	kubectl directpv init --dangerous <(kubectl get directpvnode storage -ojson \
+	| jq -r '{"version": "v1", "nodes": [{ "name": .metadata.name, "drives": [.status.devices[] | select(has("deniedReason") | not) | { "id": .id, "name": .name, "size": .size, "make": .make, select: "yes"}]}]}' \
+	| yq -y)
+.PHONY: initialize-drives
+
 reuse-apply:
 	reuse annotate --copyright NONE --license Unlicense -r "$(PROJECT_ROOT)" --fallback-dot-license
 .PHONY: reuse-apply

@@ -18,7 +18,41 @@
         "type": "github"
       }
     },
+    "nix-kubectl-directpv": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1760210348,
+        "narHash": "sha256-WYYvO8heLe2AAJpQnI87bQp43OPoENa6r4ykQvKt0m4=",
+        "owner": "Ajpantuso",
+        "repo": "nix-kubectl-directpv",
+        "rev": "a0a2d583b019b5ffd35a4bc64d763883c668ae45",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Ajpantuso",
+        "repo": "nix-kubectl-directpv",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
+      "locked": {
+        "lastModified": 1760038930,
+        "narHash": "sha256-Oncbh0UmHjSlxO7ErQDM3KM0A5/Znfofj2BSzlHLeVw=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "0b4defa2584313f3b781240b29d61f6f9f7e0df3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
       "locked": {
         "lastModified": 1757487488,
         "narHash": "sha256-zwE/e7CuPJUWKdvvTCB7iunV4E/+G0lKfv4kk/5Izdg=",
@@ -37,7 +71,8 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "nix-kubectl-directpv": "nix-kubectl-directpv",
+        "nixpkgs": "nixpkgs_2"
       }
     },
     "systems": {

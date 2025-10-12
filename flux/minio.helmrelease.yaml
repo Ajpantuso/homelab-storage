@@ -22,7 +22,8 @@ spec:
     mode: standalone
     existingSecret: minio-creds
     persistence:
-      enabled: false
+      enabled: true
+      size: 500Gi
     resources:
       requests:
         memory: 4Gi
