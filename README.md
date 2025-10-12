@@ -8,7 +8,7 @@ SPDX-License-Identifier: Unlicense
 
 - [] setup minio
 - [] Make directpv default storage class
-- [] add symlink from /var/lib/kubelet -> /var/lib/k0s/kubelet via ansible
+- [] Make job to run directpv installation, discovery, and initialization
 
 ## References
 

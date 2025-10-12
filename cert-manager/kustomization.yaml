@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ./ca.ClusterIssuer.yaml
+- ./cert-manager-auth-delegator.clusterrolebinding.yaml
+- ./token-creator.role.yaml
+- ./cert-manager-token-creator.rolebinding.yaml

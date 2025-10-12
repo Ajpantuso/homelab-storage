@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: ca
+spec:
+  vault:
+    server: https://vault.ajphome.com
+    path: home/v1/ica1/v1/sign/cert-manager
+    caBundleSecretRef:
+      name: vault-ca
+    auth:
+      tokenSecretRef:
+        name: vault-token
+        key: token

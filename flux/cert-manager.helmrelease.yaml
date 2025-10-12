@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: cert-manager
+spec:
+  targetNamespace: cert-manager
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: cert-manager
+      version: 1.14.*
+      sourceRef:
+        kind: HelmRepository
+        name: jetstack
+  interval: 10m0s
+  values:
+    installCRDs: true

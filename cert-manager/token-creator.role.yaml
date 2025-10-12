@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: token-creator
+rules:
+- apiGroups: [""]
+  resources: ["serviceaccounts/token"]
+  verbs: ["create"]
