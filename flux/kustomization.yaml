@@ -8,6 +8,8 @@ namespace: flux-system
 resources:
 - cert-manager.helmrelease.yaml
 - cert-manager.kustomization.yaml
+- directpv.gitrepository.yaml
+- directpv.kustomization.yaml
 - homelab-storage.gitrepository.yaml
 - jetstack.helmrepository.yaml
 - metallb.helmrelease.yaml

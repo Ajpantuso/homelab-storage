@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: directpv
+spec:
+  interval: 5m0s
+  path: ./resources/base
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: directpv
+  targetNamespace: directpv
+  patches:
+    - patch: |-
+        apiVersion: storage.k8s.io/v1
+        kind: StorageClass
+        metadata:
+          name: directpv-min-io
+          annotations:
+            storageclass.kubernetes.io/is-default-class: "true"
+      target:
+        kind: StorageClass
+        name: directpv-min-io
