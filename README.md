@@ -6,9 +6,7 @@ SPDX-License-Identifier: Unlicense
 
 # TODO
 
-- [] setup minio
-- [] Make directpv default storage class
-- [] Make job to run directpv installation, discovery, and initialization
+- []Move helper scripts into distributable tool
 
 ## References
 
