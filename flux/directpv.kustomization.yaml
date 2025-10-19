@@ -8,20 +8,55 @@ metadata:
   name: directpv
 spec:
   interval: 5m0s
-  path: ./resources/base
   prune: true
   sourceRef:
     kind: GitRepository
     name: directpv
+  path: ./resources/base
   targetNamespace: directpv
   patches:
-    - patch: |-
-        apiVersion: storage.k8s.io/v1
-        kind: StorageClass
-        metadata:
-          name: directpv-min-io
-          annotations:
-            storageclass.kubernetes.io/is-default-class: "true"
-      target:
-        kind: StorageClass
-        name: directpv-min-io
+  - patch: |-
+      - op: add
+        path: /metadata/annotations/storageclass.kubernetes.io~1is-default-class
+        value: "true"
+    target:
+      kind: StorageClass
+      name: directpv-min-io
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/volumes/0/hostPath/path
+        value: /var/lib/k0s/kubelet/plugins/directpv-min-io
+      - op: replace
+        path: /spec/template/spec/volumes/1/hostPath/path
+        value: /var/lib/k0s/kubelet/pods
+      - op: replace
+        path: /spec/template/spec/volumes/2/hostPath/path
+        value: /var/lib/k0s/kubelet/plugins_registry
+      - op: replace
+        path: /spec/template/spec/volumes/3/hostPath/path
+        value: /var/lib/k0s/kubelet/plugins
+      - op: replace
+        path: /spec/template/spec/containers/0/args/2
+        value: "--kubelet-registration-path=/var/lib/k0s/kubelet/plugins/directpv-min-io/csi.sock"
+      - op: replace
+        path: /spec/template/spec/containers/1/volumeMounts/1/mountPath
+        value: /var/lib/k0s/kubelet/pods
+      - op: replace
+        path: /spec/template/spec/containers/1/volumeMounts/2/mountPath
+        value: /var/lib/k0s/kubelet/plugins
+      - op: replace
+        path: /spec/template/spec/containers/2/volumeMounts/1/mountPath
+        value: /var/lib/k0s/kubelet/pods
+      - op: replace
+        path: /spec/template/spec/containers/2/volumeMounts/2/mountPath
+        value: /var/lib/k0s/kubelet/plugins
+    target:
+      kind: DaemonSet
+      name: node-server
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/volumes/0/hostPath/path
+        value: /var/lib/k0s/kubelet/plugins/controller-controller
+    target:
+      kind: Deployment
+      name: controller
