@@ -33,7 +33,6 @@ spec:
       type: ClusterIP
     ingress:
       enabled: true
-      ingressClassName: traefik
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
@@ -47,7 +46,6 @@ spec:
         - api.minio.ajphome.com
     consoleIngress:
       enabled: true
-      ingressClassName: traefik
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
