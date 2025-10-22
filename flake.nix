@@ -35,6 +35,7 @@
             podman
             pre-commit
             reuse
+            tenv
           ];
 
           shellHook = ''
