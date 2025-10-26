@@ -9,7 +9,7 @@ metadata:
 spec:
   vault:
     server: https://vault.ajphome.com
-    path: home/v1/ica1/v1/sign/cert-manager
+    path: k8s/intermediate-ca/v1/sign/k8s-cert-manager
     caBundleSecretRef:
       name: vault-ca
     auth:
