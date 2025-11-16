@@ -41,7 +41,18 @@
           shellHook = ''
             export PROJECT_ROOT="$(git rev-parse --show-toplevel)";
 
-            kubectl config use-context storage
+            # Check if 'storage' context exists, if not create it
+            if ! kubectl config get-contexts | grep -q "storage"; then
+              kubectl config set-cluster storage --server=https://storage.ajphome.com:6443 --insecure-skip-tls-verify=true
+              kubectl config set-context storage --cluster=storage --user=ajpantuso@gmail.com
+            fi
+
+            # Test connectivity to the cluster
+            if kubectl cluster-info --context=storage &>/dev/null; then
+              kubectl config use-context storage
+            else
+              echo "Warning: Could not connect to storage cluster at https://storage.ajphome.com:6443"
+            fi
           '';
         };
       });
