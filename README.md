@@ -9,5 +9,3 @@ SPDX-License-Identifier: Unlicense
 - []Move helper scripts into distributable tool
 
 ## References
-
-- https://github.com/minio/minio/tree/master/helm/minio

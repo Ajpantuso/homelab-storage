@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a homelab storage infrastructure repository that combines Kubernetes cluster deployment with persistent storage management. The project provides infrastructure-as-code for a complete storage solution using DirectPV CSI driver, MinIO object storage, and GitOps deployment via Flux.
+This is a homelab infrastructure repository that provides Kubernetes cluster deployment and GitOps management. The project uses K0s for cluster management and Flux for declarative infrastructure-as-code deployment of core components like MetalLB, Traefik, External-DNS, and Cert-Manager.
 
 ## Architecture
 
@@ -18,14 +18,13 @@ The repository follows a multi-layered architecture:
 
 ### Core Components
 - **K0s Cluster Management**: K0s configuration with kustomize overlays for single-node controller+worker deployment
-- **DirectPV CSI Storage**: MinIO DirectPV for direct persistent volume management with local storage
-- **MinIO Object Storage**: S3-compatible object storage deployed via Helm
 - **Flux GitOps**: Declarative cluster state management using HelmReleases, GitRepositories, and Kustomizations
+- **Ingress and Load Balancing**: Traefik ingress controller with MetalLB for load balancing
+- **DNS and Certificates**: External-DNS for dynamic DNS management and Cert-Manager for TLS certificates
 
 ### Directory Structure
 - `k0s/`: K0s cluster configuration with kustomization patches for host role assignment
-- `flux/`: GitOps manifests including HelmReleases for MetalLB, Traefik, MinIO, External-DNS, Cert-Manager, and DirectPV GitRepository/Kustomization
-- `metallb/`: Load balancer IP pool and L2 advertisement configurations
+- `flux/`: GitOps manifests including HelmReleases for MetalLB, Traefik, External-DNS, and Cert-Manager
 
 ## Common Commands
 
@@ -61,18 +60,6 @@ make k0s-reset
 make flux-apply
 ```
 
-### DirectPV Storage Operations
-```bash
-# Initialize DirectPV (updates CSINodes and initializes drives)
-make init-directpv
-
-# Update all CSINodes with DirectPV driver information
-make update-csinodes
-
-# Initialize drives on DirectPV nodes
-make initialize-drives
-```
-
 ## Key Configuration Details
 
 ### K0s Configuration
@@ -85,15 +72,10 @@ make initialize-drives
 #### HelmReleases
 - MetalLB for load balancing with custom IP pools
 - Traefik as ingress controller
-- MinIO for S3-compatible object storage
 - External-DNS with OpnSense webhook integration
 - Cert-Manager for TLS certificate management
 
 #### Kustomizations
-- **DirectPV**: Deployed from upstream MinIO repository (https://github.com/minio/directpv/resources/base)
-  - Configured as default StorageClass via patch
-  - Provides CSI driver for direct local volume management
-  - Target namespace: `directpv`
 - **Cert-Manager**: Local kustomization for cert-manager resources
 - **MetalLB**: Local kustomization for MetalLB IP pool and L2 advertisement configs
 - **RBAC**: Role-based access control configurations
@@ -108,7 +90,3 @@ make initialize-drives
 
 - All Makefile targets have .PHONY declarations placed after their respective target steps
 - Flux configurations use semantic versioning with wildcard patch versions
-- DirectPV is deployed via Flux Kustomization from upstream repository, not local manifests
-- DirectPV StorageClass is patched to be the default storage class with annotation `storageclass.kubernetes.io/is-default-class: "true"`
-- CSINode updates add DirectPV driver information with topology keys for proper volume scheduling
-- The `init-directpv` target automates both CSINode patching and drive initialization

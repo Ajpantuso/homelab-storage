@@ -8,10 +8,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    nix-kubectl-directpv.url = "github:Ajpantuso/nix-kubectl-directpv";
   };
 
-  outputs = { self, nixpkgs, flake-utils, nix-kubectl-directpv }:
+  outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -31,7 +30,6 @@
             gnumake
             kubectl
             kustomize
-            nix-kubectl-directpv.packages.${system}.default
             podman
             pre-commit
             reuse

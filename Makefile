@@ -27,17 +27,6 @@ update-k0s-version:
 	yq -r ".k0s.version = \"$$VERSION\"" --indentless -iy config.yaml
 .PHONY: update-k0s-version
 
-init-directpv: update-csinodes initialize-drives
-.PHONY: init-directpv
-
-update-csinodes:
-	@./hack/update-csinodes.sh
-.PHONY: update-csinodes
-
-initialize-drives:
-	@./hack/initialize-drives.sh
-.PHONY: initialize-drives
-
 reuse-apply:
 	reuse annotate --copyright NONE --license Unlicense -r "$(PROJECT_ROOT)" --fallback-dot-license
 .PHONY: reuse-apply
