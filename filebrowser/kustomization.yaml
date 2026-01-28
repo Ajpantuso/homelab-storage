@@ -7,6 +7,3 @@ kind: Kustomization
 namespace: jellyfin
 resources:
   - filebrowser.Certificate.yaml
-
-patchesStrategicMerge:
-  - jellyfin-filebrowser-deployment.patch.yaml
