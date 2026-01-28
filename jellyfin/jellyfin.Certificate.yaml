@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: jellyfin-tls
+  namespace: jellyfin
+spec:
+  secretName: jellyfin-tls
+  issuerRef:
+    name: ca
+    kind: ClusterIssuer
+    group: cert-manager.io
+  commonName: jellyfin.ajphome.com
+  dnsNames:
+  - jellyfin.ajphome.com

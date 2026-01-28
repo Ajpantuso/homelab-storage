@@ -11,6 +11,9 @@ resources:
 - external-dns.helmrepository.yaml
 - external-dns.helmrelease.yaml
 - homelab-storage.gitrepository.yaml
+- jellyfin.helmrepository.yaml
+- jellyfin.helmrelease.yaml
+- jellyfin.kustomization.yaml
 - jetstack.helmrepository.yaml
 - metallb.helmrelease.yaml
 - metallb.helmrepository.yaml
