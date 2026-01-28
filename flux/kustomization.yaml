@@ -15,9 +15,6 @@ resources:
 - metallb.helmrelease.yaml
 - metallb.helmrepository.yaml
 - metallb.kustomization.yaml
-- plex.helmrepository.yaml
-- plex.helmrelease.yaml
-- plex.kustomization.yaml
 - rbac.kustomization.yaml
 - topolvm.helmrepository.yaml
 - topolvm.helmrelease.yaml
