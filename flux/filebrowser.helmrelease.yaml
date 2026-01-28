@@ -30,9 +30,7 @@ spec:
       port: 80
 
     persistence:
-      enabled: true
-      existingClaim: jellyfin-jellyfin-media
-      mountPath: /srv
+      enabled: false
 
     resources:
       requests:

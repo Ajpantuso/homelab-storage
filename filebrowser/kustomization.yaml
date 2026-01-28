@@ -7,3 +7,27 @@ kind: Kustomization
 namespace: jellyfin
 resources:
 - filebrowser.Certificate.yaml
+
+patches:
+  - target:
+      kind: Deployment
+      name: jellyfin-filebrowser
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/volumes
+        value:
+          - name: config
+            configMap:
+              defaultMode: 420
+              name: jellyfin-filebrowser
+          - name: media
+            persistentVolumeClaim:
+              claimName: jellyfin-jellyfin-media
+      - op: replace
+        path: /spec/template/spec/containers/0/volumeMounts
+        value:
+          - mountPath: /.filebrowser.json
+            name: config
+            subPath: .filebrowser.json
+          - mountPath: /srv
+            name: media
