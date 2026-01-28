@@ -66,6 +66,11 @@ spec:
         cpu: 500m
         memory: 512Mi
 
+    config:
+      root: /srv
+      database: /db/database.db
+      port: 8080
+
     ingress:
       enabled: true
       hosts:
@@ -77,9 +82,3 @@ spec:
         - hosts:
             - filebrowser.ajphome.com
           secretName: filebrowser-tls
-
-    env:
-      - name: FB_ROOT
-        value: "/srv"
-      - name: FB_NOAUTH
-        value: "false"
