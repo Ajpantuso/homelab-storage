@@ -16,4 +16,3 @@ spec:
   targetNamespace: plex
   dependsOn:
     - name: cert-manager
-    - name: traefik
