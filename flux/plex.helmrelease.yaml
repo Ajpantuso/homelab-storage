@@ -12,57 +12,48 @@ spec:
     createNamespace: true
   chart:
     spec:
-      chart: plex
-      version: 0.5.*
+      chart: plex-media-server
+      version: 1.4.*
       sourceRef:
         kind: HelmRepository
-        name: gabe565
+        name: plex
   interval: 10m0s
   values:
+    # Config PVC - reference existing data
+    pms:
+      configExistingClaim: plex-plex-config
+      resources:
+        requests:
+          cpu: 1000m
+          memory: 2Gi
+        limits:
+          memory: 4Gi
+
     # Environment variables
-    env:
-      TZ: America/New_York  # Adjust timezone as needed
-      # PLEX_CLAIM: ""      # Optional: For first-time setup, get from https://plex.tv/claim
+    extraEnv:
+      TZ: America/New_York
 
     # Service configuration
     service:
-      main:
-        type: ClusterIP
-        ports:
-          http:
-            port: 32400
+      type: ClusterIP
+      port: 32400
 
-    # Persistence configuration
-    persistence:
-      # Plex configuration and metadata
-      config:
-        enabled: true
-        type: pvc
-        storageClass: topolvm-provisioner
-        accessMode: ReadWriteOnce
-        size: 10Gi
-        retain: true
+    # Additional volumes for media
+    extraVolumes:
+      - name: media
+        persistentVolumeClaim:
+          claimName: plex-plex-media
 
-      # Media storage
-      media:
-        enabled: true
-        type: pvc
-        storageClass: topolvm-provisioner
-        accessMode: ReadWriteOnce
-        size: 1Ti
-        retain: true
+    extraVolumeMounts:
+      - name: media
         mountPath: /media
 
-      # Transcode temporary directory (emptyDir for performance)
-      transcode:
-        enabled: true
-        type: emptyDir
-        mountPath: /transcode
-
-    # Resource requests/limits (adjust based on your node capacity)
-    resources:
-      requests:
-        cpu: 1000m
-        memory: 2Gi
-      limits:
-        memory: 4Gi
+    # Ingress configuration
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      url: plex.ajphome.com
+      tls:
+        - hosts:
+            - plex.ajphome.com
+          secretName: plex-tls

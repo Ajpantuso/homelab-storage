@@ -5,7 +5,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: gabe565
+  name: plex
 spec:
   interval: 24h0m0s
-  url: https://charts.gabe565.com
+  url: https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages
