@@ -51,7 +51,6 @@ spec:
     # Ingress configuration
     ingress:
       enabled: true
-      ingressClassName: traefik
       url: plex.ajphome.com
       tls:
         - hosts:
