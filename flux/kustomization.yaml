@@ -8,15 +8,18 @@ namespace: flux-system
 resources:
 - cert-manager.helmrelease.yaml
 - cert-manager.kustomization.yaml
+- external-dns.helmrepository.yaml
+- external-dns.helmrelease.yaml
 - homelab-storage.gitrepository.yaml
 - jetstack.helmrepository.yaml
 - metallb.helmrelease.yaml
 - metallb.helmrepository.yaml
 - metallb.kustomization.yaml
-- traefik.helmrepository.yaml
-- traefik.helmrelease.yaml
+- plex.helmrepository.yaml
+- plex.helmrelease.yaml
+- plex.kustomization.yaml
+- rbac.kustomization.yaml
 - topolvm.helmrepository.yaml
 - topolvm.helmrelease.yaml
-- external-dns.helmrepository.yaml
-- external-dns.helmrelease.yaml
-- rbac.kustomization.yaml
+- traefik.helmrepository.yaml
+- traefik.helmrelease.yaml

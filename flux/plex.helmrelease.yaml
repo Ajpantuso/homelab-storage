@@ -1,0 +1,68 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: plex
+spec:
+  targetNamespace: plex
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: plex
+      version: 0.5.*
+      sourceRef:
+        kind: HelmRepository
+        name: gabe565
+  interval: 10m0s
+  values:
+    # Environment variables
+    env:
+      TZ: America/New_York  # Adjust timezone as needed
+      # PLEX_CLAIM: ""      # Optional: For first-time setup, get from https://plex.tv/claim
+
+    # Service configuration
+    service:
+      main:
+        type: ClusterIP
+        ports:
+          http:
+            port: 32400
+
+    # Persistence configuration
+    persistence:
+      # Plex configuration and metadata
+      config:
+        enabled: true
+        type: pvc
+        storageClass: topolvm-provisioner
+        accessMode: ReadWriteOnce
+        size: 10Gi
+        retain: true
+
+      # Media storage
+      media:
+        enabled: true
+        type: pvc
+        storageClass: topolvm-provisioner
+        accessMode: ReadWriteOnce
+        size: 1Ti
+        retain: true
+        mountPath: /media
+
+      # Transcode temporary directory (emptyDir for performance)
+      transcode:
+        enabled: true
+        type: emptyDir
+        mountPath: /transcode
+
+    # Resource requests/limits (adjust based on your node capacity)
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+      limits:
+        memory: 4Gi
