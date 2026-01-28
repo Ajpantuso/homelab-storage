@@ -11,6 +11,9 @@ CONTAINER_ENGINE ?= docker
 help:
 	@echo "Available targets:"
 	@echo "  flux-apply             - Apply Flux configuration"
+	@echo "  setup-lvm              - Setup LVM volume group for TopoLVM (requires DEVICE=/dev/sdX)"
+	@echo "  verify-lvm             - Verify LVM setup for TopoLVM"
+	@echo "  topolvm-status         - Show TopoLVM deployment status"
 .PHONY: help
 
 # Flux targets
@@ -30,3 +33,29 @@ update-k0s-version:
 reuse-apply:
 	reuse annotate --copyright NONE --license Unlicense -r "$(PROJECT_ROOT)" --fallback-dot-license
 .PHONY: reuse-apply
+
+# TopoLVM LVM setup targets
+setup-lvm:
+	@echo "Setting up LVM for TopoLVM..."
+	@if [ -z "$(DEVICE)" ]; then \
+		echo "ERROR: DEVICE is required"; \
+		echo "Usage: make setup-lvm DEVICE=/dev/sdb [VG_NAME=homelab-vg]"; \
+		exit 1; \
+	fi
+	sudo "$(PROJECT_ROOT)/hack/setup-lvm.sh" --device "$(DEVICE)" --vg-name "$${VG_NAME:-homelab-vg}"
+.PHONY: setup-lvm
+
+verify-lvm:
+	@"$(PROJECT_ROOT)/hack/verify-lvm.sh" "$${VG_NAME:-homelab-vg}"
+.PHONY: verify-lvm
+
+topolvm-status:
+	@echo "TopoLVM Resources:"
+	@kubectl get all -n topolvm-system 2>/dev/null || echo "  No resources found (not deployed yet)"
+	@echo ""
+	@echo "TopoLVM Nodes:"
+	@kubectl get topolvmnodes.topolvm.io -A 2>/dev/null || echo "  No TopoLVMNode resources found"
+	@echo ""
+	@echo "StorageClass:"
+	@kubectl get storageclass topolvm-provisioner 2>/dev/null || echo "  topolvm-provisioner not found"
+.PHONY: topolvm-status

@@ -1,0 +1,52 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: topolvm
+spec:
+  targetNamespace: topolvm-system
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: topolvm
+      version: 15.7.*
+      sourceRef:
+        kind: HelmRepository
+        name: topolvm
+  interval: 10m0s
+  values:
+    # Cert-Manager integration
+    cert-manager:
+      enabled: true
+
+    # Controller configuration
+    controller:
+      replicaCount: 1
+
+    # K0s kubelet directory configuration (CRITICAL)
+    node:
+      kubeletWorkDirectory: /var/lib/k0s/kubelet
+
+    # LVM device class configuration
+    lvmd:
+      managed: true
+      socketName: /run/topolvm/lvmd.sock
+      deviceClasses:
+        - name: ssd
+          volume-group: myvg1
+          default: true
+          spare-gb: 10
+
+    # StorageClass configuration
+    storageClasses:
+      - name: topolvm-provisioner
+        storageClass:
+          fsType: xfs
+          reclaimPolicy: Delete
+          isDefaultClass: true
+          volumeBindingMode: WaitForFirstConsumer
+          allowVolumeExpansion: true

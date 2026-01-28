@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a homelab infrastructure repository that provides Kubernetes cluster deployment and GitOps management. The project uses K0s for cluster management and Flux for declarative infrastructure-as-code deployment of core components like MetalLB, Traefik, External-DNS, and Cert-Manager.
+This is a homelab storage infrastructure repository that combines Kubernetes cluster deployment with persistent storage management using TopoLVM CSI driver and GitOps deployment via Flux.
 
 ## Architecture
 
@@ -19,6 +19,7 @@ The repository follows a multi-layered architecture:
 ### Core Components
 - **K0s Cluster Management**: K0s configuration with kustomize overlays for single-node controller+worker deployment
 - **Flux GitOps**: Declarative cluster state management using HelmReleases, GitRepositories, and Kustomizations
+- **TopoLVM CSI Storage**: Capacity-aware LVM-based persistent volume management with dynamic provisioning
 - **Ingress and Load Balancing**: Traefik ingress controller with MetalLB for load balancing
 - **DNS and Certificates**: External-DNS for dynamic DNS management and Cert-Manager for TLS certificates
 
@@ -60,6 +61,19 @@ make k0s-reset
 make flux-apply
 ```
 
+### TopoLVM Storage Operations
+```bash
+# Setup LVM volume group (one-time setup, run for each device)
+make setup-lvm DEVICE=/dev/sda VG_NAME=homelab-vg
+make setup-lvm DEVICE=/dev/sdb VG_NAME=homelab-vg
+
+# Verify LVM configuration
+make verify-lvm VG_NAME=homelab-vg
+
+# Check TopoLVM deployment status
+make topolvm-status
+```
+
 ## Key Configuration Details
 
 ### K0s Configuration
@@ -72,6 +86,7 @@ make flux-apply
 #### HelmReleases
 - MetalLB for load balancing with custom IP pools
 - Traefik as ingress controller
+- TopoLVM for capacity-aware LVM-based persistent storage
 - External-DNS with OpnSense webhook integration
 - Cert-Manager for TLS certificate management
 
@@ -79,6 +94,14 @@ make flux-apply
 - **Cert-Manager**: Local kustomization for cert-manager resources
 - **MetalLB**: Local kustomization for MetalLB IP pool and L2 advertisement configs
 - **RBAC**: Role-based access control configurations
+
+### TopoLVM Configuration
+- Deployed via Helm with cert-manager integration
+- Kubelet path configured for K0s: `/var/lib/k0s/kubelet`
+- Requires LVM volume group on storage nodes (default: `homelab-vg`)
+- Creates `topolvm-provisioner` StorageClass as default
+- Supports dynamic provisioning with capacity-aware scheduling
+- Uses XFS filesystem for better storage performance
 
 ### Makefile Environment Variables
 - `CONTAINER_ENGINE`: Container runtime (default: docker)
@@ -90,3 +113,6 @@ make flux-apply
 
 - All Makefile targets have .PHONY declarations placed after their respective target steps
 - Flux configurations use semantic versioning with wildcard patch versions
+- TopoLVM requires LVM volume groups to be created on nodes before deployment using `make setup-lvm`
+- The kubelet directory path is explicitly configured for K0s compatibility (`/var/lib/k0s/kubelet`)
+- TopoLVM uses WaitForFirstConsumer volume binding for capacity-aware pod scheduling
