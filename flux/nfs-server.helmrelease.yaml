@@ -23,14 +23,23 @@ spec:
     - kustomize:
         patchesJson6902:
           - target:
+              group: ""
+              version: v1
+              kind: Service
+              name: nfs-server-nfs-server-provisioner
+            patch:
+              - op: add
+                path: /metadata/annotations
+                value:
+                  external-dns.alpha.kubernetes.io/hostname: media.ajphome.com
+          - target:
               group: apps
               version: v1
               kind: StatefulSet
               name: nfs-server-nfs-server-provisioner
-            patch: |-
-              - op: replace
+            patch:
+              - op: remove
                 path: /spec/template/spec/volumes/0/emptyDir
-                value: null
               - op: add
                 path: /spec/template/spec/volumes/0/persistentVolumeClaim
                 value:
