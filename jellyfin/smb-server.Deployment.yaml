@@ -5,46 +5,36 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nfs-server
+  name: smb-server
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: nfs-server
+      app: smb-server
   template:
     metadata:
       labels:
-        app: nfs-server
+        app: smb-server
     spec:
       nodeSelector:
         kubernetes.io/hostname: storage
       containers:
-      - name: nfs-server
-        image: itsthenetwork/nfs-server-alpine:latest
+      - name: smb-server
+        image: dperson/samba:latest
         securityContext:
-          privileged: true
+          privileged: false
+          allowPrivilegeEscalation: false
         env:
-        - name: SHARED_DIRECTORY
-          value: /exports
-        - name: SYNC
-          value: "true"
-        - name: EXPORT_OPTS
-          value: "-sync,rw,no_root_squash,no_subtree_check"
+        - name: SHARE
+          value: "media;/exports;yes;no;yes"
+        - name: WORKGROUP
+          value: "HOMELAB"
         ports:
-        - name: nfs
-          containerPort: 2049
+        - name: smb
+          containerPort: 445
           protocol: TCP
-        - name: nfs-udp
-          containerPort: 2049
-          protocol: UDP
-        - name: rpcbind
-          containerPort: 111
-          protocol: TCP
-        - name: rpcbind-udp
-          containerPort: 111
-          protocol: UDP
         volumeMounts:
         - name: media
           mountPath: /exports

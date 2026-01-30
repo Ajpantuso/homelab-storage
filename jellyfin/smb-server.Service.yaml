@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: smb-server
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: media.ajphome.com
+spec:
+  type: LoadBalancer
+  selector:
+    app: smb-server
+  ports:
+  - name: smb
+    port: 445
+    targetPort: 445
+    protocol: TCP

@@ -7,5 +7,5 @@ kind: Kustomization
 namespace: jellyfin
 resources:
 - jellyfin.Certificate.yaml
-- nfs-server.Deployment.yaml
-- nfs-server.Service.yaml
+- smb-server.Deployment.yaml
+- smb-server.Service.yaml
