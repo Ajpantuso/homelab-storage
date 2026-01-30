@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-server
+  template:
+    metadata:
+      labels:
+        app: nfs-server
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: storage
+      containers:
+      - name: nfs-server
+        image: itsthenetwork/nfs-server-alpine:latest
+        securityContext:
+          privileged: true
+        env:
+        - name: SHARED_DIRECTORY
+          value: /exports
+        - name: SYNC
+          value: "true"
+        ports:
+        - name: nfs
+          containerPort: 2049
+          protocol: TCP
+        - name: nfs-udp
+          containerPort: 2049
+          protocol: UDP
+        - name: rpcbind
+          containerPort: 111
+          protocol: TCP
+        - name: rpcbind-udp
+          containerPort: 111
+          protocol: UDP
+        volumeMounts:
+        - name: media
+          mountPath: /exports
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: media
+        persistentVolumeClaim:
+          claimName: jellyfin-jellyfin-media
