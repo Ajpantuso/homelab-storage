@@ -19,6 +19,32 @@ spec:
         name: filebrowser
         namespace: flux-system
   interval: 10m0s
+  postRenderers:
+    - kustomize:
+        patchesStrategicMerge:
+          - apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+              name: jellyfin-filebrowser
+            spec:
+              template:
+                spec:
+                  volumes:
+                    - name: config
+                      configMap:
+                        defaultMode: 420
+                        name: jellyfin-filebrowser
+                    - name: media
+                      persistentVolumeClaim:
+                        claimName: jellyfin-jellyfin-media
+                  containers:
+                    - name: filebrowser
+                      volumeMounts:
+                        - mountPath: /.filebrowser.json
+                          name: config
+                          subPath: .filebrowser.json
+                        - mountPath: /srv
+                          name: media
   values:
     image:
       repository: filebrowser/filebrowser
@@ -30,9 +56,7 @@ spec:
       port: 80
 
     persistence:
-      enabled: true
-      existingClaim: jellyfin-jellyfin-media
-      mountPath: /srv
+      enabled: false
 
     resources:
       requests:
@@ -42,9 +66,13 @@ spec:
         cpu: 500m
         memory: 512Mi
 
+    config:
+      root: /srv
+      database: /db/database.db
+      port: 8080
+
     ingress:
       enabled: true
-      className: traefik-system-traefik
       hosts:
         - host: filebrowser.ajphome.com
           paths:
@@ -54,9 +82,3 @@ spec:
         - hosts:
             - filebrowser.ajphome.com
           secretName: filebrowser-tls
-
-    env:
-      - name: FB_ROOT
-        value: "/srv"
-      - name: FB_NOAUTH
-        value: "false"
