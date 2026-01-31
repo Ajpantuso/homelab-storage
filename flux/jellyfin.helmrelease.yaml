@@ -19,6 +19,12 @@ spec:
         name: jellyfin
   interval: 10m0s
   values:
+    podPrivileges:
+      hostNetwork: true
+
+    jellyfin:
+      enableDLNA: true
+
     env:
       TZ: America/New_York
       JELLYFIN_CACHE_DIR: /cache
