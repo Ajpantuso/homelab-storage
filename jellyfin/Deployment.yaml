@@ -24,11 +24,16 @@ spec:
           protocol: TCP
         env:
         - name: PASSWORD_ACCESS
-          value: "false"
+          value: "true"
         - name: SUDO_ACCESS
           value: "false"
         - name: USER_NAME
           value: "labadm"
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: openssh-server-creds
+              key: password
         volumeMounts:
         - name: config
           mountPath: /config
@@ -36,8 +41,6 @@ spec:
           mountPath: /home
         - name: media
           mountPath: /data
-        - name: custom-scripts
-          mountPath: /custom-cont-init.d
       volumes:
       - name: config
         persistentVolumeClaim:
@@ -48,7 +51,3 @@ spec:
       - name: media
         persistentVolumeClaim:
           claimName: jellyfin-jellyfin-media
-      - name: custom-scripts
-        configMap:
-          name: openssh-server-custom-scripts
-          defaultMode: 0755
