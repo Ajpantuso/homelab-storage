@@ -22,6 +22,10 @@ spec:
         ports:
         - containerPort: 2222
           protocol: TCP
+        securityContext:
+          capabilities:
+            add:
+            - SYS_CHROOT
         env:
         - name: PASSWORD_ACCESS
           value: "false"
