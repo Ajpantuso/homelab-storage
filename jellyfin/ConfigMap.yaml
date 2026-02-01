@@ -11,6 +11,6 @@ data:
     #!/bin/bash
     set -e
     wget -qO /config/ssh_ca_key.pub http://vault.ajphome.com/v1/ssh-ca/public_key
-    if ! grep -q "TrustedUserCertificateFile" /config/sshd_config; then
-      echo "TrustedUserCertificateFile /config/ssh_ca_key.pub" >> /config/sshd_config
+    if ! grep -q "TrustedUserCAKeys" /config/sshd_config; then
+      echo "TrustedUserCAKeys /config/ssh_ca_key.pub" >> /config/sshd/sshd_config
     fi
