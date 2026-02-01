@@ -24,16 +24,16 @@ spec:
           protocol: TCP
         env:
         - name: PASSWORD_ACCESS
-          value: "true"
+          value: "false"
         - name: SUDO_ACCESS
           value: "false"
         - name: USER_NAME
-          value: "labadm"
-        - name: PASSWORD
+          value: "jellyfin"
+        - name: PUBLIC_KEY
           valueFrom:
             secretKeyRef:
               name: openssh-server-creds
-              key: password
+              key: authorized_key
         volumeMounts:
         - name: config
           mountPath: /config
