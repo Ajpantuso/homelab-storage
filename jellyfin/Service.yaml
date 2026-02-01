@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: openssh-server
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 22
+    targetPort: 2222
+    protocol: TCP
+  selector:
+    app: openssh-server

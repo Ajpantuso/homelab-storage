@@ -10,9 +10,6 @@ resources:
 - cert-manager.kustomization.yaml
 - external-dns.helmrepository.yaml
 - external-dns.helmrelease.yaml
-- filebrowser.helmrepository.yaml
-- filebrowser.helmrelease.yaml
-- filebrowser.kustomization.yaml
 - homelab-storage.gitrepository.yaml
 - jellyfin.helmrepository.yaml
 - jellyfin.helmrelease.yaml

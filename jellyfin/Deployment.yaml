@@ -1,0 +1,52 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openssh-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openssh-server
+  template:
+    metadata:
+      labels:
+        app: openssh-server
+    spec:
+      containers:
+      - name: openssh-server
+        image: linuxserver/openssh-server
+        ports:
+        - containerPort: 2222
+          protocol: TCP
+        env:
+        - name: PASSWORD_ACCESS
+          value: "false"
+        - name: SUDO_ACCESS
+          value: "false"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: home
+          mountPath: /home
+        - name: media
+          mountPath: /data
+        - name: custom-scripts
+          mountPath: /custom-cont-init.d
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: openssh-server-config
+      - name: home
+        persistentVolumeClaim:
+          claimName: openssh-server-home
+      - name: media
+        persistentVolumeClaim:
+          claimName: jellyfin-jellyfin-media
+      - name: custom-scripts
+        configMap:
+          name: openssh-server-custom-scripts
+          defaultMode: 0755
