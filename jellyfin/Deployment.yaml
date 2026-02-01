@@ -16,6 +16,8 @@ spec:
       labels:
         app: openssh-server
     spec:
+      securityContext:
+        fsGroup: 1000
       containers:
       - name: openssh-server
         image: linuxserver/openssh-server
@@ -23,6 +25,10 @@ spec:
         - containerPort: 2222
           protocol: TCP
         env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
         - name: PASSWORD_ACCESS
           value: "false"
         - name: SUDO_ACCESS
