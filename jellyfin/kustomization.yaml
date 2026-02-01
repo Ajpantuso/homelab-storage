@@ -9,6 +9,6 @@ resources:
   - jellyfin.Certificate.yaml
   - Deployment.yaml
   - Service.yaml
-  - openssh-server-sshd-config.ConfigMap.yaml
+  - openssh-server-custom-scripts.ConfigMap.yaml
   - openssh-server-config.PersistentVolumeClaim.yaml
   - openssh-server-home.PersistentVolumeClaim.yaml
