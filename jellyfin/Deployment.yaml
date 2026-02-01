@@ -41,8 +41,9 @@ spec:
           mountPath: /home
         - name: media
           mountPath: /data
-        - name: custom-scripts
-          mountPath: /custom-cont-init.d
+        - name: sshd-config
+          mountPath: /config/sshd_config
+          subPath: sshd_config
       volumes:
       - name: config
         persistentVolumeClaim:
@@ -53,7 +54,7 @@ spec:
       - name: media
         persistentVolumeClaim:
           claimName: jellyfin-jellyfin-media
-      - name: custom-scripts
+      - name: sshd-config
         configMap:
-          name: openssh-server-custom-scripts
-          defaultMode: 0755
+          name: openssh-server-sshd-config
+          defaultMode: 0644

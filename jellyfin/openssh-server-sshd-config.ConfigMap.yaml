@@ -5,12 +5,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: openssh-server-custom-scripts
+  name: openssh-server-sshd-config
 data:
-  10-sshd-config: |
-    #!/bin/bash
-    set -e
-    cat > /config/sshd_config <<'EOF'
+  sshd_config: |
     # This is the sshd server system-wide configuration file.
     Port 2222
     AddressFamily any
@@ -41,4 +38,3 @@ data:
       PermitTTY yes
       X11Forwarding no
       PermitUserRC no
-    EOF
