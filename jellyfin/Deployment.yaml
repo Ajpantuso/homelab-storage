@@ -27,6 +27,8 @@ spec:
           value: "false"
         - name: SUDO_ACCESS
           value: "false"
+        - name: USER_NAME
+          value: "labadm"
         volumeMounts:
         - name: config
           mountPath: /config
