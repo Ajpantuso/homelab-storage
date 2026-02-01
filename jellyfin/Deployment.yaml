@@ -51,14 +51,12 @@ spec:
           mountPath: /data
       volumes:
       - name: config
-        persistentVolumeClaim:
-          claimName: openssh-server-config
+        emptyDir: {}
       - name: sshd-config
         configMap:
           name: openssh-server-sshd-config
       - name: home
-        persistentVolumeClaim:
-          claimName: openssh-server-home
+        emptyDir: {}
       - name: media
         persistentVolumeClaim:
           claimName: jellyfin-jellyfin-media

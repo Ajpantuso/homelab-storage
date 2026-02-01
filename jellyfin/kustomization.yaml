@@ -10,5 +10,3 @@ resources:
   - openssh-server-sshd-config.ConfigMap.yaml
   - Deployment.yaml
   - Service.yaml
-  - openssh-server-config.PersistentVolumeClaim.yaml
-  - openssh-server-home.PersistentVolumeClaim.yaml
