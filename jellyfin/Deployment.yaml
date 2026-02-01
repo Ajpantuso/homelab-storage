@@ -38,7 +38,7 @@ spec:
         - name: config
           mountPath: /config
         - name: sshd-config
-          mountPath: /etc/ssh/sshd_config.d
+          mountPath: /config/sshd/sshd_config.d
         - name: home
           mountPath: /home
         - name: media
