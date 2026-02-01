@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openssh-server-custom-scripts
+data:
+  01-enable-sftp.sh: |
+    #!/bin/bash
+    # Enable SFTP subsystem in sshd_config
+    SSHD_CONFIG="/config/ssh/sshd_config"
+
+    # Add SFTP subsystem if not already present
+    if ! grep -q "^Subsystem sftp" "$SSHD_CONFIG"; then
+      echo "Subsystem sftp /usr/lib/ssh/sftp-server" >> "$SSHD_CONFIG"
+    fi
