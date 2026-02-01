@@ -37,8 +37,8 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /config
-        - name: custom-scripts
-          mountPath: /custom-cont-init.d
+        - name: sshd-config
+          mountPath: /etc/ssh/sshd_config.d
         - name: home
           mountPath: /home
         - name: media
@@ -47,10 +47,9 @@ spec:
       - name: config
         persistentVolumeClaim:
           claimName: openssh-server-config
-      - name: custom-scripts
+      - name: sshd-config
         configMap:
-          name: openssh-server-custom-scripts
-          defaultMode: 0755
+          name: openssh-server-sshd-config
       - name: home
         persistentVolumeClaim:
           claimName: openssh-server-home

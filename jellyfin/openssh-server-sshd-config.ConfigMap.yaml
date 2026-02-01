@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openssh-server-sshd-config
+data:
+  99-sftp.conf: |
+    # Enable SFTP subsystem
+    Subsystem sftp /usr/lib/ssh/sftp-server

@@ -7,7 +7,7 @@ kind: Kustomization
 namespace: jellyfin
 resources:
   - jellyfin.Certificate.yaml
-  - openssh-server-custom-scripts.ConfigMap.yaml
+  - openssh-server-sshd-config.ConfigMap.yaml
   - Deployment.yaml
   - Service.yaml
   - openssh-server-config.PersistentVolumeClaim.yaml
