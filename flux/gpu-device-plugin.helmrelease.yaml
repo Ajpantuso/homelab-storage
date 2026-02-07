@@ -19,7 +19,6 @@ spec:
         name: intel
   interval: 10m0s
   dependsOn:
-    - name: device-plugin-node-prep
     - name: device-plugin-operator
     - name: nfd
   values:

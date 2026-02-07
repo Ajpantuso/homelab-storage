@@ -8,7 +8,6 @@ namespace: flux-system
 resources:
 - cert-manager.helmrelease.yaml
 - cert-manager.kustomization.yaml
-- device-plugin-node-prep.kustomization.yaml
 - device-plugin-operator.helmrelease.yaml
 - external-dns.helmrepository.yaml
 - external-dns.helmrelease.yaml
