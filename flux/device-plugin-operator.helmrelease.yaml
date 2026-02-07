@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: device-plugin-operator
+spec:
+  targetNamespace: device-plugin-operator
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: intel-device-plugins-operator
+      version: 0.34.*
+      sourceRef:
+        kind: HelmRepository
+        name: intel
+  interval: 10m0s
+  dependsOn:
+    - name: cert-manager

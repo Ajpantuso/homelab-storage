@@ -8,9 +8,13 @@ namespace: flux-system
 resources:
 - cert-manager.helmrelease.yaml
 - cert-manager.kustomization.yaml
+- device-plugin-node-prep.kustomization.yaml
+- device-plugin-operator.helmrelease.yaml
 - external-dns.helmrepository.yaml
 - external-dns.helmrelease.yaml
+- gpu-device-plugin.helmrelease.yaml
 - homelab-storage.gitrepository.yaml
+- intel.helmrepository.yaml
 - jellyfin.helmrepository.yaml
 - jellyfin.helmrelease.yaml
 - jellyfin.kustomization.yaml
@@ -18,6 +22,8 @@ resources:
 - metallb.helmrelease.yaml
 - metallb.helmrepository.yaml
 - metallb.kustomization.yaml
+- nfd.helmrelease.yaml
+- nfd.helmrepository.yaml
 - rbac.kustomization.yaml
 - topolvm.helmrepository.yaml
 - topolvm.helmrelease.yaml

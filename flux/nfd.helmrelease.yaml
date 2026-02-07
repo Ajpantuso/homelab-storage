@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: nfd
+spec:
+  targetNamespace: node-feature-discovery
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: node-feature-discovery
+      version: 0.15.*
+      sourceRef:
+        kind: HelmRepository
+        name: nfd
+  interval: 10m0s
