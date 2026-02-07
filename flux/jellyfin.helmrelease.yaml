@@ -71,3 +71,20 @@ spec:
         - hosts:
             - jellyfin.ajphome.com
           secretName: jellyfin-tls
+
+    securityContext:
+      capabilities:
+        add:
+          - "SYS_ADMIN"
+        drop:
+          - "ALL"
+      privileged: false
+
+    volumes:
+      - name: hwa
+        hostPath:
+          path: /dev/dri
+
+    volumeMounts:
+      - name: hwa
+        mountPath: /dev/dri
