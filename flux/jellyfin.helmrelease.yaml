@@ -7,6 +7,8 @@ kind: HelmRelease
 metadata:
   name: jellyfin
 spec:
+  dependsOn:
+    - name: gpu-device-plugin
   targetNamespace: jellyfin
   install:
     createNamespace: true
@@ -21,6 +23,12 @@ spec:
   values:
     podPrivileges:
       hostNetwork: true
+
+    # Deployment strategy must be Recreate due to hostNetwork port binding
+    # requirements for DLNA (ports 1900, 7359). Rolling updates would fail
+    # as new pods cannot bind to ports still held by terminating pods.
+    deploymentStrategy:
+      type: Recreate
 
     jellyfin:
       enableDLNA: true
@@ -57,8 +65,10 @@ spec:
       requests:
         cpu: 1000m
         memory: 2Gi
+        gpu.intel.com/i915: "1"
       limits:
         memory: 4Gi
+        gpu.intel.com/i915: "1"
 
     ingress:
       enabled: true
@@ -74,17 +84,6 @@ spec:
 
     securityContext:
       capabilities:
-        add:
-          - "SYS_ADMIN"
         drop:
           - "ALL"
       privileged: false
-
-    volumes:
-      - name: hwa
-        hostPath:
-          path: /dev/dri
-
-    volumeMounts:
-      - name: hwa
-        mountPath: /dev/dri
